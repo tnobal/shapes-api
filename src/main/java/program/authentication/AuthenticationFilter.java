@@ -32,7 +32,6 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
         if (apiKeyOptional.isEmpty()) {
             return getAuthenticationManager().authenticate(new PreAuthenticatedAuthenticationToken(request.getLocalAddr(), null));
         }
-        //ApiKeyAuthenticationToken token = apiKeyOptional.map(ApiKeyAuthenticationToken::new).orElse(new ApiKeyAuthenticationToken());
         return getAuthenticationManager().authenticate(new PreAuthenticatedAuthenticationToken(request.getLocalAddr(), apiKeyOptional.get()));
     }
 

@@ -6,8 +6,14 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @Component
 public class ApiKeyAuthenticationProvider implements AuthenticationProvider {
@@ -17,13 +23,13 @@ public class ApiKeyAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String givenKey = (String) authentication.getPrincipal();
-        System.out.println("api: " + authentication);
+        var givenKey = authentication.getCredentials();
         if (ObjectUtils.isEmpty(givenKey)) {
             throw new InsufficientAuthenticationException("No API key in request");
         } else {
             if (apiKey.equals(givenKey)) {
-                return new ApiKeyAuthenticationToken(givenKey, true);
+                Collection<? extends GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+                return new PreAuthenticatedAuthenticationToken(givenKey, true, authorities);
             }
             throw new BadCredentialsException("API Key is invalid");
         }
@@ -31,6 +37,6 @@ public class ApiKeyAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return ApiKeyAuthenticationToken.class.isAssignableFrom(authentication);
+        return PreAuthenticatedAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

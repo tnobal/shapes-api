@@ -21,7 +21,6 @@ public class IpAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String ip = (String) authentication.getPrincipal();
-        System.out.println("ip: " + authentication);
         if (!ObjectUtils.isEmpty(ip) && ip.equals(whitelist)) {
             return new PreAuthenticatedAuthenticationToken(ip, null);
         }

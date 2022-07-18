@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 
-import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -37,6 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationManager authenticationManager() {
-        return new ProviderManager(List.of(ipAuthenticationProvider, apiKeyAuthenticationProvider));
+       return new ProviderManager(List.of(ipAuthenticationProvider, apiKeyAuthenticationProvider));
     }
 }
