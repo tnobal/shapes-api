@@ -36,6 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationManager authenticationManager() {
-       return new ProviderManager(List.of(ipAuthenticationProvider, apiKeyAuthenticationProvider));
+        return new ProviderManager(List.of(ipAuthenticationProvider, apiKeyAuthenticationProvider));
     }
 }
